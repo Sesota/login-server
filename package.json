@@ -1,0 +1,24 @@
+{
+  "name": "login-server",
+  "version": "1.0.0",
+  "description": "Server-side codes for login application",
+  "main": "login.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sesota/login-server.git"
+  },
+  "author": "Sepehr Solouki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sesota/login-server/issues"
+  },
+  "homepage": "https://github.com/Sesota/login-server#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mysql": "^2.18.1"
+  }
+}
