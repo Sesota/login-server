@@ -4,7 +4,7 @@ const Account = db.Account;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-  var id;
+  // var id;
   // Find the target account
   Account.findOne({
     where: {
@@ -16,33 +16,31 @@ exports.create = (req, res) => {
         return res.status(404).send({
           message: "Account not found",
         });
-      } else {
-        id = account.id;
       }
+      // Create an Account Info record
+      const accountinfo = {
+        fname: req.body.fname,
+        lname: req.body.lname,
+        linkedin: req.body.linkedin,
+        twitter: req.body.twitter,
+        accountId: account.id,
+      };
+
+      // Save Account Info in the database
+      AccountInfo.create(accountinfo)
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message:
+              err.message ||
+              "Some error occured while creating the Account Info",
+          });
+        });
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
-    });
-
-  // Create an Account Info record
-  const accountinfo = {
-    fname: req.body.fname,
-    lname: req.body.lname,
-    linkedin: req.body.linkedin,
-    twitter: req.body.twitter,
-    accountId: id,
-  };
-
-  // Save Account Info in the database
-  AccountInfo.create(accountinfo)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occured while creating the Account Info",
-      });
     });
 };
 
@@ -60,24 +58,63 @@ exports.findOne = (req, res) => {
           message: "Account not found",
         });
       }
-      id = account.id;
+      // Search for the account info
+      AccountInfo.findOne({
+        where: {
+          accountId: account.id,
+        },
+      })
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message: "Error retrieving accountinfo with accountid = " + id,
+          });
+        });
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
     });
+};
 
-  // Search for the account info
-  AccountInfo.findOne({
+exports.update = (req, res) => {
+  const username = req.params.username;
+
+  // Find the target account
+  Account.findOne({
     where: {
-      accountId: id,
+      username: username,
     },
   })
-    .then((data) => {
-      res.send(data);
+    .then((account) => {
+      if (!account) {
+        return res.status(404).send({
+          message: "Account not found",
+        });
+      }
+      // Update
+      AccountInfo.update(req.body, {
+        where: { accountId: account.id },
+      })
+        .then((num) => {
+          if (num == 1) {
+            res.send({
+              message: "AccountInfo was updated successfully.",
+            });
+          } else {
+            res.send({
+              message: `Cannot update Account Info for username=${username}. Maybe Account Info was not found or req.body is empty!`,
+            });
+          }
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message: "Error updating Account Info for username=" + username,
+          });
+        });
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving accountinfo with accountid = " + id,
-      });
+      res.status(500).send({ message: err.message });
     });
 };

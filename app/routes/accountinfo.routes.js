@@ -2,11 +2,14 @@ module.exports = (app) => {
   const accountinfo = require("../controllers/accountinfo.controller");
   var router = require("express").Router();
 
-  // Create a new account
+  // Create account info
   router.post("/", accountinfo.create);
 
-  // Retrieve a single account with id
+  // Retrieve account info
   router.get("/", accountinfo.findOne);
+
+  // Update account info
+  router.put("/:username", accountinfo.update);
 
   app.use("/api/accountinfo", router);
 };
