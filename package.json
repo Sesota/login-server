@@ -2,7 +2,7 @@
   "name": "login-server",
   "version": "1.0.0",
   "description": "Server-side codes for login application",
-  "main": "login.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/Sesota/login-server#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "mysql": "^2.18.1"
+    "mysql2": "^2.1.0",
+    "sequelize": "^6.2.4",
+    "sequelize-cli": "^6.1.0"
   }
 }
