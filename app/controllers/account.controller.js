@@ -1,5 +1,6 @@
 const db = require("../models");
 const Account = db.Account;
+const AccountInfo = db.AccountInfo;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
@@ -20,8 +21,26 @@ exports.create = (req, res) => {
 
   // Save Account in the database
   Account.create(account)
-    .then((data) => {
-      res.send(data);
+    .then((data1) => {
+      // res.send(data);  // The code is commented because the data is sent to the client after creating the account info
+
+      // Create an Account Info record for the new Account
+      const accountinfo = {
+        accountId: data1.id,
+      };
+
+      // Save Account Info in the database
+      AccountInfo.create(accountinfo)
+        .then((data2) => {
+          res.send(data2); // How to merge data1 and data2 to output to the client?
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message:
+              err.message ||
+              "Account has been saved but creating Account Info failed",
+          });
+        });
     })
     .catch((err) => {
       res.status(500).send({

@@ -9,12 +9,16 @@ module.exports = (sequelize, Sequelize) => {
     username: {
       type: Sequelize.STRING,
       allowNull: false,
+      unique: true,
     },
     password: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    email: { type: Sequelize.STRING },
+    email: {
+      type: Sequelize.STRING,
+      unique: true,
+    },
   });
 
   Account.associate = function (models) {

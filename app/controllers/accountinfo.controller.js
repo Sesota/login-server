@@ -45,11 +45,12 @@ exports.create = (req, res) => {
 };
 
 exports.findOne = (req, res) => {
-  var id;
+  const username = req.params.username;
+
   // Find the target account
   Account.findOne({
     where: {
-      username: req.query.username,
+      username: username,
     },
   })
     .then((account) => {

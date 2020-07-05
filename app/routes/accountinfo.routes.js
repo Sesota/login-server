@@ -6,7 +6,7 @@ module.exports = (app) => {
   router.post("/", accountinfo.create);
 
   // Retrieve account info
-  router.get("/", accountinfo.findOne);
+  router.get("/:username", accountinfo.findOne);
 
   // Update account info
   router.put("/:username", accountinfo.update);
