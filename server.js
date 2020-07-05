@@ -31,6 +31,7 @@ app.get("/", (req, res) => {
 require("./app/routes/account.routes")(app);
 require("./app/routes/friendshiprelation.routes")(app);
 require("./app/routes/auth.routes")(app);
+require("./app/routes/accountinfo.routes")(app);
 
 const PORT = process.env.PORT || 8050;
 app.listen(PORT, () => {
