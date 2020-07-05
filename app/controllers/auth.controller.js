@@ -1,6 +1,7 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const Account = db.Account;
+const AccountInfo = db.AccountInfo;
 
 const Op = db.Sequelize.Op;
 
@@ -14,7 +15,23 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8),
     email: req.body.email,
   })
-    .then((user) => {
+    .then((data1) => {
+      // Create an Account Info record for the new Account
+      const accountinfo = {
+        accountId: data1.id,
+      };
+
+      // Save Account Info in the database
+      AccountInfo.create(accountinfo)
+        .then()
+        .catch((err) => {
+          res.status(500).send({
+            message:
+              err.message ||
+              "Account has been saved but creating Account Info failed",
+          });
+        });
+
       res.send({
         message: "Account was registered successfully!",
       });
